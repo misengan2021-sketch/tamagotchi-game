@@ -16,6 +16,26 @@ jobs:
           unzip tamagotchi_full_project.zip -d project
           ls project
 
+      # Патчим settings.gradle в GROOVY-синтаксисе, чтобы указать версии плагинов
+      - name: Patch settings.gradle (groovy)
+        run: |
+          cat > project/settings.gradle << 'EOF'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+              plugins {
+                  id "com.android.application" version "8.5.0"
+                  id "org.jetbrains.kotlin.android" version "1.9.0"
+              }
+          }
+
+          rootProject.name = "TamagotchiFull"
+          include ":app"
+          EOF
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -34,8 +54,8 @@ jobs:
 
       - name: Build debug APK
         run: |
-          cd project/app
-          gradle assembleDebug
+          cd project
+          gradle :app:assembleDebug
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
