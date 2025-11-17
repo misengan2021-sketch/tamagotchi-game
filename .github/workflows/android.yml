@@ -238,8 +238,8 @@ jobs:
           cd project/app/src/main/java/com/example/tamagotchi/ui
           sed -i 's/import androidx.compose.runtime.Composable/import androidx.compose.runtime.Composable\nimport androidx.compose.runtime.getValue\nimport androidx.compose.runtime.setValue\nimport androidx.compose.runtime.remember\nimport androidx.compose.runtime.mutableStateOf/' AppScaffold.kt
 
-      # 5) ПОЛНОСТЬЮ ПЕРЕПИСЫВАЕМ app/build.gradle НА СОВРЕМЕННЫЙ ВАРИАНТ
-           - name: Rewrite app build.gradle
+      # 5) ПОЛНОСТЬЮ ПЕРЕПИСЫВАЕМ app/build.gradle НА СОВРЕМЕННЫЙ ВАРИАНТ 
+      - name: Rewrite app build.gradle
         run: |
           cat <<EOF > project/app/build.gradle
           plugins {
