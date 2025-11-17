@@ -16,6 +16,16 @@ jobs:
           unzip tamagotchi_full_project.zip -d project
           ls project
 
+      # Удаляем строку с kotlinCompilerExtensionVersion из app/build.gradle
+      - name: Patch app build.gradle (remove bad compose compiler version)
+        run: |
+          cd project/app
+          echo "===== app/build.gradle BEFORE ====="
+          cat build.gradle
+          sed -i '/kotlinCompilerExtensionVersion/d' build.gradle
+          echo "===== app/build.gradle AFTER ====="
+          cat build.gradle
+
       # settings.gradle с плагинами и репозиториями
       - name: Patch settings.gradle
         run: |
