@@ -269,8 +269,8 @@ jobs:
           include ":app"
           EOF
 
-      # gradle.properties: AndroidX + менее агрессивный Gradle
-            - name: Create gradle.properties
+      # gradle.properties: AndroidX + менее агрессивный Grad
+      - name: Create gradle.properties
         run: |
           cd project
           cat <<EOF > gradle.properties
