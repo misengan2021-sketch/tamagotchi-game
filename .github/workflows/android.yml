@@ -270,7 +270,7 @@ jobs:
           EOF
 
       # gradle.properties: AndroidX + менее агрессивный Gradle
-      - name: Create gradle.properties
+            - name: Create gradle.properties
         run: |
           cd project
           cat <<EOF > gradle.properties
@@ -279,7 +279,10 @@ jobs:
           org.gradle.daemon=false
           org.gradle.parallel=false
           org.gradle.workers.max=2
+          # Жёстко задаём версию компилятора Compose
+          kotlin.compose.compiler.version=1.5.0
           EOF
+
 
       - name: Set up JDK
         uses: actions/setup-java@v4
