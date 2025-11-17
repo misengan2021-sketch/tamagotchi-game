@@ -13,10 +13,10 @@ jobs:
 
       - name: Unzip project
         run: |
-          unzip tamagotuchi_full_project.zip -d project || unzip tamagotchi_full_project.zip -d project
+          unzip tamagotchi_full_project.zip -d project
           ls project
 
-      # Пишем settings.gradle простым способом, без кавычек в heredoc
+      # settings.gradle с плагинами и репозиториями
       - name: Patch settings.gradle
         run: |
           cd project
@@ -47,6 +47,18 @@ jobs:
           echo "===== settings.gradle ====="
           cat settings.gradle
           echo "==========================="
+
+      # gradle.properties с включённым AndroidX
+      - name: Create gradle.properties
+        run: |
+          cd project
+          cat <<EOF > gradle.properties
+          android.useAndroidX=true
+          android.enableJetifier=true
+          EOF
+          echo "===== gradle.properties ====="
+          cat gradle.properties
+          echo "============================="
 
       - name: Set up JDK
         uses: actions/setup-java@v4
