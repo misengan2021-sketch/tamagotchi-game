@@ -310,35 +310,6 @@ jobs:
           mkdir -p project/app/src/main/java/com/example/tamagotchi/viewmodel
           cat <<'EOF' > project/app/src/main/java/com/example/tamagotchi/viewmodel/MultiTamagotchiViewModel.kt
           package com.example.tamagotchi.viewmodel
-      - name: Rewrite AppScaffold.kt
-        run: |
-          mkdir -p project/app/src/main/java/com/example/tamagotchi/ui
-          cat <<'EOF' > project/app/src/main/java/com/example/tamagotchi/ui/AppScaffold.kt
-          package com.example.tamagotchi.ui
-
-          import androidx.compose.foundation.layout.fillMaxSize
-          import androidx.compose.material.MaterialTheme
-          import androidx.compose.material.Surface
-          import androidx.compose.runtime.Composable
-          import androidx.compose.ui.Modifier
-          import androidx.lifecycle.viewmodel.compose.viewModel
-          import com.example.tamagotchi.MainGameScreen
-          import com.example.tamagotchi.viewmodel.MultiTamagotchiViewModel
-
-          @Composable
-          fun AppScaffold(
-              vm: MultiTamagotchiViewModel = viewModel()
-          ) {
-              MaterialTheme {
-                  Surface(
-                      modifier = Modifier.fillMaxSize(),
-                      color = MaterialTheme.colors.background
-                  ) {
-                      MainGameScreen(vm = vm)
-                  }
-              }
-          }
-          EOF
 
           import android.app.Application
           import androidx.compose.runtime.mutableStateListOf
@@ -513,6 +484,36 @@ jobs:
                   _pets.clear()
                   _pets.addAll(merged)
                   return merged
+              }
+          }
+          EOF
+
+      - name: Rewrite AppScaffold.kt
+        run: |
+          mkdir -p project/app/src/main/java/com/example/tamagotchi/ui
+          cat <<'EOF' > project/app/src/main/java/com/example/tamagotchi/ui/AppScaffold.kt
+          package com.example.tamagotchi.ui
+
+          import androidx.compose.foundation.layout.fillMaxSize
+          import androidx.compose.material.MaterialTheme
+          import androidx.compose.material.Surface
+          import androidx.compose.runtime.Composable
+          import androidx.compose.ui.Modifier
+          import androidx.lifecycle.viewmodel.compose.viewModel
+          import com.example.tamagotchi.MainGameScreen
+          import com.example.tamagotchi.viewmodel.MultiTamagotchiViewModel
+
+          @Composable
+          fun AppScaffold(
+              vm: MultiTamagotchiViewModel = viewModel()
+          ) {
+              MaterialTheme {
+                  Surface(
+                      modifier = Modifier.fillMaxSize(),
+                      color = MaterialTheme.colors.background
+                  ) {
+                      MainGameScreen(vm = vm)
+                  }
               }
           }
           EOF
