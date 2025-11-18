@@ -29,7 +29,6 @@ jobs:
     android:icon="@android:drawable/ic_dialog_info"
     android:roundIcon="@android:drawable/ic_dialog_info"
     android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar">
-
                   <activity
                       android:name=".MainActivity"
                       android:exported="true">
