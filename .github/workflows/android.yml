@@ -15,6 +15,9 @@ jobs:
         run: |
           unzip tamagotchi_full_project.zip -d project
           ls project
+      - name: Remove old UI MainActivity
+        run: |
+          rm -f project/app/src/main/java/com/example/tamagotchi/ui/MainActivity.kt || true
 
       - name: Rewrite AndroidManifest
         run: |
