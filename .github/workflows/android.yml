@@ -47,8 +47,151 @@ jobs:
       - name: Create MainActivity.kt
         run: |
           mkdir -p project/app/src/main/java/com/example/tamagotchi
+                - name: Create MainActivity.kt
+        run: |
+          mkdir -p project/app/src/main/java/com/example/tamagotchi
           cat <<'EOF' > project/app/src/main/java/com/example/tamagotchi/MainActivity.kt
           package com.example.tamagotchi
+
+          import android.os.Bundle
+          import androidx.activity.ComponentActivity
+          import androidx.activity.compose.setContent
+          import androidx.compose.foundation.layout.*
+          import androidx.compose.material.*
+          import androidx.compose.runtime.*
+          import androidx.compose.ui.Alignment
+          import androidx.compose.ui.Modifier
+          import androidx.compose.ui.text.font.FontWeight
+          import androidx.compose.ui.unit.dp
+          import androidx.compose.ui.unit.sp
+
+          class MainActivity : ComponentActivity() {
+              override fun onCreate(savedInstanceState: Bundle?) {
+                  super.onCreate(savedInstanceState)
+                  setContent {
+                      MaterialTheme {
+                          Surface(
+                              modifier = Modifier.fillMaxSize(),
+                              color = MaterialTheme.colors.background
+                          ) {
+                              SimpleTamaScreen()
+                          }
+                      }
+                  }
+              }
+          }
+
+          @Composable
+          fun SimpleTamaScreen() {
+              var name by remember { mutableStateOf("Лошадка") }
+              var hunger by remember { mutableStateOf(80) }
+              var energy by remember { mutableStateOf(80) }
+              var happiness by remember { mutableStateOf(80) }
+              var ageMinutes by remember { mutableStateOf(0) }
+
+              // Простейший таймер старения
+              LaunchedEffect(Unit) {
+                  while (true) {
+                      kotlinx.coroutines.delay(5000)
+                      ageMinutes += 1
+                      hunger = (hunger - 2).coerceAtLeast(0)
+                      energy = (energy - 1).coerceAtLeast(0)
+                      happiness = (happiness - 1).coerceAtLeast(0)
+                  }
+              }
+
+              Column(
+                  modifier = Modifier
+                      .fillMaxSize()
+                      .padding(16.dp),
+                  verticalArrangement = Arrangement.spacedBy(16.dp),
+                  horizontalAlignment = Alignment.CenterHorizontally
+              ) {
+                  Text(
+                      text = "Tamagotchi Horse",
+                      style = MaterialTheme.typography.h5,
+                      fontWeight = FontWeight.Bold
+                  )
+
+                  Text(
+                      text = "🐴",
+                      fontSize = 64.sp
+                  )
+
+                  OutlinedTextField(
+                      value = name,
+                      onValueChange = { name = it },
+                      label = { Text("Имя лошадки") }
+                  )
+
+                  Text("Имя: $name")
+                  Text("Возраст: ${ageMinutes} мин")
+
+                  StatRow("Сытость", hunger)
+                  StatRow("Энергия", energy)
+                  StatRow("Счастье", happiness)
+
+                  Row(
+                      horizontalArrangement = Arrangement.spacedBy(8.dp),
+                      modifier = Modifier.fillMaxWidth()
+                  ) {
+                      Button(
+                          onClick = {
+                              hunger = (hunger + 15).coerceAtMost(100)
+                              happiness = (happiness + 5).coerceAtMost(100)
+                          },
+                          modifier = Modifier.weight(1f)
+                      ) {
+                          Text("Кормить")
+                      }
+
+                      Button(
+                          onClick = {
+                              happiness = (happiness + 15).coerceAtMost(100)
+                              energy = (energy - 10).coerceAtLeast(0)
+                          },
+                          modifier = Modifier.weight(1f)
+                      ) {
+                          Text("Играть")
+                      }
+                  }
+
+                  OutlinedButton(
+                      onClick = {
+                          hunger = 80
+                          energy = 80
+                          happiness = 80
+                          ageMinutes = 0
+                      },
+                      modifier = Modifier.fillMaxWidth()
+                  ) {
+                      Text("Сбросить")
+                  }
+              }
+          }
+
+          @Composable
+          fun StatRow(label: String, value: Int) {
+              Column(
+                  verticalArrangement = Arrangement.spacedBy(4.dp),
+                  modifier = Modifier.fillMaxWidth()
+              ) {
+                  Row(
+                      horizontalArrangement = Arrangement.SpaceBetween,
+                      modifier = Modifier.fillMaxWidth()
+                  ) {
+                      Text(label)
+                      Text("${value.coerceIn(0, 100)}/100")
+                  }
+                  LinearProgressIndicator(
+                      progress = (value.coerceIn(0, 100) / 100f),
+                      modifier = Modifier
+                          .fillMaxWidth()
+                          .height(6.dp)
+                  )
+              }
+          }
+          EOF
 
           import android.os.Bundle
           import androidx.activity.ComponentActivity
